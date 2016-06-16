@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f30x_gpio.c
   * @author  MCD Application Team
-  * @version V1.1.1
-  * @date    04-April-2014
+  * @version V1.2.2
+  * @date    27-February-2015
   * @brief   This file provides firmware functions to manage the following 
   *          functionalities of the GPIO peripheral:
   *           + Initialization and Configuration functions
@@ -56,7 +56,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2015 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -148,12 +148,22 @@ void GPIO_DeInit(GPIO_TypeDef* GPIOx)
     RCC_AHBPeriphResetCmd(RCC_AHBPeriph_GPIOE, ENABLE);
     RCC_AHBPeriphResetCmd(RCC_AHBPeriph_GPIOE, DISABLE);
   }
+  else if(GPIOx == GPIOF)
+  {
+    RCC_AHBPeriphResetCmd(RCC_AHBPeriph_GPIOF, ENABLE);
+    RCC_AHBPeriphResetCmd(RCC_AHBPeriph_GPIOF, DISABLE);
+  }
+  else if(GPIOx == GPIOG)
+  {
+    RCC_AHBPeriphResetCmd(RCC_AHBPeriph_GPIOG, ENABLE);
+    RCC_AHBPeriphResetCmd(RCC_AHBPeriph_GPIOG, DISABLE);
+  }
   else
   {
-    if(GPIOx == GPIOF)
+    if(GPIOx == GPIOH)
     {
-      RCC_AHBPeriphResetCmd(RCC_AHBPeriph_GPIOF, ENABLE);
-      RCC_AHBPeriphResetCmd(RCC_AHBPeriph_GPIOF, DISABLE);
+      RCC_AHBPeriphResetCmd(RCC_AHBPeriph_GPIOH, ENABLE);
+      RCC_AHBPeriphResetCmd(RCC_AHBPeriph_GPIOH, DISABLE);
     }
   }
 }
@@ -161,7 +171,7 @@ void GPIO_DeInit(GPIO_TypeDef* GPIOx)
 /**
   * @brief  Initializes the GPIOx peripheral according to the specified 
   *         parameters in the GPIO_InitStruct.
-  * @param  GPIOx: where x can be (A, B, C, D, E or F) to select the GPIO peripheral.
+  * @param  GPIOx: where x can be (A, B, C, D, E, F, G or H) to select the GPIO peripheral.
   * @param  GPIO_InitStruct: pointer to a GPIO_InitTypeDef structure that 
   *         contains the configuration information for the specified GPIO
   *         peripheral.
@@ -290,7 +300,7 @@ void GPIO_PinLockConfig(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
 
 /**
   * @brief  Reads the specified input port pin.
-  * @param  GPIOx: where x can be (A, B, C, D, E or F) to select the GPIO peripheral.
+  * @param  GPIOx: where x can be (A, B, C, D, E, F, G or H) to select the GPIO peripheral.
   * @param  GPIO_Pin: specifies the port bit to read.
   * @note   This parameter can be GPIO_Pin_x where x can be :
   *         (0..15) for GPIOA, GPIOB, GPIOC, GPIOD or GPIOE;
@@ -318,7 +328,7 @@ uint8_t GPIO_ReadInputDataBit(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
 
 /**
   * @brief  Reads the specified input port pin.
-  * @param  GPIOx: where x can be (A, B, C, D, E or F) to select the GPIO peripheral.
+  * @param  GPIOx: where x can be (A, B, C, D, E, F, G or H) to select the GPIO peripheral.
   * @retval The input port pin value.
   */
 uint16_t GPIO_ReadInputData(GPIO_TypeDef* GPIOx)
@@ -331,7 +341,7 @@ uint16_t GPIO_ReadInputData(GPIO_TypeDef* GPIOx)
 
 /**
   * @brief  Reads the specified output data port bit.
-  * @param  GPIOx: where x can be (A, B, C, D, E or F) to select the GPIO peripheral.
+  * @param  GPIOx: where x can be (A, B, C, D, E, F, G or H) to select the GPIO peripheral.
   * @param  GPIO_Pin: Specifies the port bit to read.
   * @note   This parameter can be GPIO_Pin_x where x can be :
   *         (0..15) for GPIOA, GPIOB, GPIOC, GPIOD or GPIOE;
@@ -359,7 +369,7 @@ uint8_t GPIO_ReadOutputDataBit(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
 
 /**
   * @brief  Reads the specified GPIO output data port.
-  * @param  GPIOx: where x can be (A, B, C, D, E or F) to select the GPIO peripheral.
+  * @param  GPIOx: where x can be (A, B, C, D, E, F, G or H) to select the GPIO peripheral.
   * @retval GPIO output data port value.
   */
 uint16_t GPIO_ReadOutputData(GPIO_TypeDef* GPIOx)
@@ -372,7 +382,7 @@ uint16_t GPIO_ReadOutputData(GPIO_TypeDef* GPIOx)
 
 /**
   * @brief  Sets the selected data port bits.
-  * @param  GPIOx: where x can be (A, B, C, D, E or F) to select the GPIO peripheral.
+  * @param  GPIOx: where x can be (A, B, C, D, E, F, G or H) to select the GPIO peripheral.
   * @param  GPIO_Pin: specifies the port bits to be written.
   * @note   This parameter can be GPIO_Pin_x where x can be :
   *         (0..15) for GPIOA, GPIOB, GPIOC, GPIOD or GPIOE;
@@ -390,7 +400,7 @@ void GPIO_SetBits(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
 
 /**
   * @brief  Clears the selected data port bits.
-  * @param  GPIOx: where x can be (A, B, C, D, E or F) to select the GPIO peripheral.
+  * @param  GPIOx: where x can be (A, B, C, D, E, F, G or H) to select the GPIO peripheral.
   * @param  GPIO_Pin: specifies the port bits to be written.
   * @note   This parameter can be GPIO_Pin_x where x can be :
   *         (0..15) for GPIOA, GPIOB, GPIOC, GPIOD or GPIOE;
@@ -408,7 +418,7 @@ void GPIO_ResetBits(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
 
 /**
   * @brief  Sets or clears the selected data port bit.
-  * @param  GPIOx: where x can be (A, B, C, D, E or F) to select the GPIO peripheral.
+  * @param  GPIOx: where x can be (A, B, C, D, E, F, G or H) to select the GPIO peripheral.
   * @param  GPIO_Pin: specifies the port bit to be written.
   * @note   This parameter can be GPIO_Pin_x where x can be :
   *         (0..15) for GPIOA, GPIOB, GPIOC, GPIOD or GPIOE;
@@ -438,7 +448,7 @@ void GPIO_WriteBit(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, BitAction BitVal)
 
 /**
   * @brief  Writes data to the specified GPIO data port.
-  * @param  GPIOx: where x can be (A, B, C, D, E or F) to select the GPIO peripheral.
+  * @param  GPIOx: where x can be (A, B, C, D, E, F, G or H) to select the GPIO peripheral.
   * @param  PortVal: specifies the value to be written to the port output data 
   *                  register.
   * @retval None
@@ -469,7 +479,7 @@ void GPIO_Write(GPIO_TypeDef* GPIOx, uint16_t PortVal)
 
 /**
   * @brief  Writes data to the specified GPIO data port.
-  * @param  GPIOx: where x can be (A, B, C, D, E or F) to select the GPIO peripheral.
+  * @param  GPIOx: where x can be (A, B, C, D, E, F, G or H) to select the GPIO peripheral.
   * @param  GPIO_PinSource: specifies the pin for the Alternate function.
   *   This parameter can be GPIO_PinSourcex where x can be (0..15).
   * @param  GPIO_AF: selects the pin to be used as Alternate function.  
