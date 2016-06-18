@@ -69,7 +69,7 @@ void USARTClass::begin(uint32_t baud, uint8_t config) {
     af = 8;
   }
 #endif
-#if defined(SERIES_STM32F30x)
+#if defined(SERIES_STM32F30x) and !defined(STM32F303x8)
   // FIXME: this will need to be expanded
   if (usartMap->USARTx == UART4 || usartMap->USARTx == UART5) {
     af = 5;

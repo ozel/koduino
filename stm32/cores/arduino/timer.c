@@ -90,12 +90,12 @@ void pinTimerInit(uint8_t pin) {
   // FIXME: Advanced timers need to be specified in variant.cpp
   // isAdvancedTimer() ir something
   // http://www.disca.upv.es/aperles/arm_cortex_m3/curset/STM32F4xx_DSP_StdPeriph_Lib_V1.0.1/html/group___t_i_m___group4.html
-#if defined(SERIES_STM32F4xx)
+#if defined(SERIES_STM32F4xx) or defined(STM32F303x8)
   if (TIMER_MAP[timer].TIMx == TIM1) {
     TIM_CtrlPWMOutputs(TIM1, ENABLE);
   }
 #endif
-#if defined(SERIES_STM32F30x)
+#if defined(SERIES_STM32F30x) and !defined(STM32F303x8) //FIXME
   if (IS_TIM_LIST6_PERIPH(TIMER_MAP[timer].TIMx)) {
     TIM_CtrlPWMOutputs(TIMER_MAP[timer].TIMx, ENABLE);
   }

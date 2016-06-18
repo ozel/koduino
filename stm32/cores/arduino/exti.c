@@ -56,7 +56,7 @@ const uint8_t extiIRQn[] = {
   EXTI0_IRQn,     //0
   EXTI1_IRQn,     //1
 #if defined(SERIES_STM32F37x) || defined(SERIES_STM32F30x)
-  EXTI2_TS_IRQn,  //2
+  EXTI2_TSC_IRQn,  //2 was named EXTI2_TS_IRQn in older CMSIS verions
 #else
   EXTI2_IRQn,     //2
 #endif
@@ -120,10 +120,12 @@ void attachInterruptWithPriority(uint8_t pinName, ISRType ISR, InterruptTrigger 
     SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOC, pinfo->pin);
   else if (pinfo->port == GPIOD)
     SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOD, pinfo->pin);
+#if !defined(STM32F303x8) //FIXME: needs probably more exceptions
   else if (pinfo->port == GPIOE)
     SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOE, pinfo->pin);
   else if (pinfo->port == GPIOF)
     SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOF, pinfo->pin);
+#endif
 #endif
 
   // Configure EXTIi line
