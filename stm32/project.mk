@@ -30,10 +30,11 @@ HSE_VALUE ?= 16000000UL
 CLKSRC ?= HSI
 MAX_PROGRAM_SIZE ?= 0
 UPLOAD_METHOD ?= SERIAL
-UPLOAD_PORT ?= 
+UPLOAD_PORT ?=
 SECTOR_ERASE ?= 0
 LIBRARIES ?=
 KODUINO_ISRS ?= CALL
+NUCLEO_MOUNT_LABEL ?= NUCLEO
 
 ######################################################################################
 
@@ -56,7 +57,7 @@ AR = $(ARCH)-ar
 SZ = $(ARCH)-size
 
 # Try to escape spaces
-null := 
+null :=
 SPACE := $(null) $(null)
 CURDIR_NOSP  = $(subst $(SPACE),\ ,$(CURDIR))
 BUILDDIR  = $(CURDIR_NOSP)/build
@@ -71,12 +72,12 @@ $(info Compiling for $(VARIANT), MCU = $(MCU), project = $(PROJNAME), upload met
 STD_PERIPH_MODULES = adc exti flash gpio i2c misc pwr rcc spi syscfg tim usart dma
 
 # Cygwin needs a prefix, also if not windows, get kernel name
-UNAME := 
+UNAME :=
 # ifeq ($(OS),Windows_NT)
 # 	PREF := /cygwin64
 # else
 UNAME := $(shell uname)
-PREF := 
+PREF :=
 # endif
 
 # Libraries
@@ -84,11 +85,12 @@ EXTRA_LIB_INCS = $(patsubst %,-I"$(PREF)$(KODUINO_DIR)/libraries/%",$(LIBRARIES)
 
 # Compile and link flags
 BFLAGSMCU = -mfpu=fpv4-sp-d16 -mfloat-abi=hard -fsingle-precision-constant -ffast-math -D__FPU_PRESENT=1 -DARM_MATH_CM4 -mcpu=cortex-m4
+#BFLAGSMCU = -mfpu=fpv4-sp-d16 -mfloat-abi=hard -fsingle-precision-constant -ffast-math -DARM_MATH_CM4 -mcpu=cortex-m4
 LDFLAGSMCU = -larm_cortexM4lf_math
 # No FPU for M3 or M0
 ifeq ($(SERIES), STM32F10x)
 	BFLAGSMCU = -mcpu=cortex-m3
-	LDFLAGSMCU = 
+	LDFLAGSMCU =
 endif
 
 BFLAGS = -O3 -Os -Wall -Werror-implicit-function-declaration -Wno-sign-compare -Wno-strict-aliasing -Wdouble-promotion -Wno-unused-local-typedefs \
@@ -117,7 +119,7 @@ LIBRARY_CXX_SRCS = $(foreach dir,$(LIBRARIES),$(wildcard $(KODUINO_DIR)/librarie
 C_SRCS = $(VARIANT_C_SRCS) $(CORE_C_SRCS) $(LIBRARY_C_SRCS)
 CXX_SRCS = $(VARIANT_CXX_SRCS) $(CORE_CXX_SRCS) $(LIBRARY_CXX_SRCS)
 S_SRCS = $(wildcard $(VARIANT_DIR)/*.S)
-	
+
 C_OBJS = $(patsubst %.c,$(BUILDDIR)/%.o,$(notdir $(C_SRCS)))
 CXX_OBJS = $(patsubst %.cpp,$(BUILDDIR)/%.o,$(notdir $(CXX_SRCS)))
 S_OBJS = $(patsubst %.S,$(BUILDDIR)/%.o,$(notdir $(S_SRCS)))
@@ -154,7 +156,7 @@ else
 ifeq ($(UPLOAD_METHOD), NUCLEO)
 # nucleo
 	@sudo python $(KODUINO_DIR)/system/mbedremounter.py
-	@cp $< /Volumes/NUCLEO/
+	@cp $< /Volumes/$(NUCLEO_MOUNT_LABEL)/
 else
 # dfu-util
 ifeq ($(UNAME),Linux)
@@ -226,5 +228,3 @@ $(BUILDDIR)/%.o: $(CORE_DIR)/%.c
 $(BUILDDIR)/%.o: $(CORE_DIR)/%.cpp
 	@echo "[CXX] $(^F)"
 	@$(CXX) $(CXXFLAGS) -c -o "$@" "$^"
-
-
